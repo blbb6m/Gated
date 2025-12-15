@@ -1,20 +1,26 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Gated-Team-46 (Flutter)
+Mobile Application for Wardrobe, brand-drop reminders, and order tracking — built with Flutter.
 
-# Run and deploy your AI Studio app
+## Team
+- Ben Bryant - DevOps Manager
+- Chinonye Omeife - Lead Developer
+- Abdul-Matin Adelekan - Project Manager
 
-This contains everything you need to run your app locally.
+## Project Description
+Mobile app where users manage a digital wardrobe, follow brands drops, and track orders.
+Tech: Flutter, Riverpod, GoRouter, Dio.
 
-View your app in AI Studio: https://ai.studio/apps/drive/17Xozusx_J3Ki1seta6TgwAaFglncpfJs
+## Project Links
+- Jira Board: https://blbb6m.atlassian.net/jira/software/projects/SCRUM/boards/1?atlOrigin=eyJpIjoiNTExNzM5NjZkMGZlNDFiOWI1OWVmODhjZmQwN2VlM2QiLCJwIjoiaiJ9
+- Figma/Designs (optional): <ADD_LINK_HERE>
 
-## Run Locally
+## DB Design 
+<img width="1084" height="714" alt="Homework #1 (1)" src="https://github.com/user-attachments/assets/56a8bf6c-1bcc-462e-aa5d-111b4456c4e7" />
 
-**Prerequisites:**  Node.js
 
+## Run
+```bash
+flutter pub get
+dart run build_runner build -d
+flutter run
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`

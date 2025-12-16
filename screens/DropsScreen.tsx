@@ -1,23 +1,33 @@
 import React, { useState, useRef } from 'react';
+import { supabase } from '../services/supabaseClient';
 import { Drop } from '../models/types';
-import { Bell, BellOff, Calendar, Plus, X, Upload, Link as LinkIcon, ExternalLink } from 'lucide-react';
+import { Bell, BellOff, Calendar, Plus, X, Upload, Link as LinkIcon, ExternalLink, Trash2, Loader2 } from 'lucide-react';
 
 interface DropsScreenProps {
   drops: Drop[];
   onAdd: (drop: Drop) => void;
+  onDelete: (id: string) => void;
 }
 
-const DropsScreen: React.FC<DropsScreenProps> = ({ drops, onAdd }) => {
+const DropsScreen: React.FC<DropsScreenProps> = ({ drops, onAdd, onDelete }) => {
   const [isAdding, setIsAdding] = useState(false);
+  
   const [newDrop, setNewDrop] = useState<Partial<Drop>>({
     brand: '',
     name: '',
     date: '',
-    time: '12:00 PM EST',
+    time: '12:00', // Default 24h format
     imageUrl: '',
     url: ''
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDelete = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm("Are you sure you want to delete this drop event?")) {
+      onDelete(id);
+    }
+  };
 
   const handleAddDrop = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,13 +37,13 @@ const DropsScreen: React.FC<DropsScreenProps> = ({ drops, onAdd }) => {
         brand: newDrop.brand || 'Unknown Brand',
         name: newDrop.name,
         date: newDrop.date,
-        time: newDrop.time || 'TBD',
+        time: newDrop.time || '12:00',
         imageUrl: newDrop.imageUrl || 'https://picsum.photos/400/400?blur=5',
         notified: true,
         url: newDrop.url
       } as Drop);
       setIsAdding(false);
-      setNewDrop({ brand: '', name: '', date: '', time: '12:00 PM EST', imageUrl: '', url: '' });
+      setNewDrop({ brand: '', name: '', date: '', time: '12:00', imageUrl: '', url: '' });
     }
   };
 
@@ -74,7 +84,7 @@ const DropsScreen: React.FC<DropsScreenProps> = ({ drops, onAdd }) => {
 
       <div className="space-y-4 max-w-4xl">
         {drops.map((drop) => (
-          <div key={drop.id} className="group flex flex-col sm:flex-row bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden hover:border-neutral-600 transition-all">
+          <div key={drop.id} className="group flex flex-col sm:flex-row bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden hover:border-neutral-600 transition-all relative">
             
             {/* Image */}
             <div className="sm:w-48 h-48 sm:h-auto bg-neutral-800 relative">
@@ -87,16 +97,27 @@ const DropsScreen: React.FC<DropsScreenProps> = ({ drops, onAdd }) => {
             {/* Content */}
             <div className="flex-1 p-6 flex flex-col justify-center">
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-bold text-white">{drop.name}</h3>
-                <button className={`p-2 rounded-full transition-colors ${drop.notified ? 'bg-white text-black' : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'}`}>
-                  {drop.notified ? <Bell size={18} fill="currentColor" /> : <BellOff size={18} />}
+                <h3 className="text-xl font-bold text-white pr-10">{drop.name}</h3>
+                
+                {/* Delete Button */}
+                <button
+                    onClick={(e) => handleDelete(drop.id, e)}
+                    className="absolute top-6 right-6 p-2 bg-neutral-800 hover:bg-red-900/50 hover:text-red-400 text-neutral-500 rounded-full transition-colors opacity-100 md:opacity-0 group-hover:opacity-100"
+                    title="Delete Drop"
+                >
+                   <Trash2 size={18} />
                 </button>
               </div>
-              
-              <div className="flex items-center gap-2 text-neutral-400 mb-6">
-                <Calendar size={16} />
-                <span className="text-sm font-medium">{drop.date} @ {drop.time}</span>
-              </div>
+
+               <div className="flex items-center justify-between mb-6">
+                 <div className="flex items-center gap-2 text-neutral-400">
+                    <Calendar size={16} />
+                    <span className="text-sm font-medium">{drop.date} @ {drop.time}</span>
+                 </div>
+                 <button className={`p-2 rounded-full transition-colors ${drop.notified ? 'bg-white text-black' : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'}`}>
+                   {drop.notified ? <Bell size={18} fill="currentColor" /> : <BellOff size={18} />}
+                 </button>
+               </div>
 
               <div className="flex gap-3 mt-auto">
                  <button className="flex-1 py-2 rounded-lg bg-neutral-100 text-black font-medium text-sm hover:bg-white transition-colors">
@@ -185,11 +206,10 @@ const DropsScreen: React.FC<DropsScreenProps> = ({ drops, onAdd }) => {
                 <div>
                   <label className="block text-sm font-medium text-neutral-400 mb-1">Time</label>
                   <input 
-                    type="text" 
+                    type="time" 
                     value={newDrop.time}
                     onChange={e => setNewDrop({...newDrop, time: e.target.value})}
                     className="w-full bg-neutral-800 border border-neutral-700 rounded-lg p-3 text-white focus:outline-none focus:border-neutral-500"
-                    placeholder="12:00 PM EST"
                   />
                 </div>
               </div>

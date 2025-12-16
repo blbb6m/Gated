@@ -7,13 +7,16 @@ import {
   Sparkles,
   LogOut
 } from 'lucide-react';
+import { supabase } from '../services/supabaseClient';
 
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  userEmail?: string;
+  onSignOut: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userEmail, onSignOut }) => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
     { id: 'wardrobe', label: 'Wardrobe', icon: Shirt },
@@ -56,13 +59,16 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
       {/* User / Footer - Desktop Only */}
       <div className="hidden md:flex flex-col mt-auto pt-6 border-t border-neutral-800">
         <div className="flex items-center gap-3 px-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500" />
-          <div className="text-sm">
-            <p className="text-white font-medium">User</p>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 shrink-0" />
+          <div className="text-sm overflow-hidden">
+            <p className="text-white font-medium truncate">{userEmail ? userEmail.split('@')[0] : 'User'}</p>
             <p className="text-neutral-500 text-xs">Premium Member</p>
           </div>
         </div>
-        <button className="flex items-center gap-3 p-3 mt-4 text-neutral-500 hover:text-red-400 transition-colors">
+        <button 
+          onClick={onSignOut}
+          className="flex items-center gap-3 p-3 mt-4 text-neutral-500 hover:text-red-400 transition-colors w-full text-left"
+        >
           <LogOut size={18} />
           <span>Sign Out</span>
         </button>

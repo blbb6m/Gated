@@ -1,20 +1,46 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Gated-Team-46 (Web)
+Web Application for Wardrobe, brand-drop reminders, and order tracking.
 
-# Run and deploy your AI Studio app
+## Team
+- Ben Bryant - DevOps Manager
+- Chinonye Omeife - Lead Developer
+- Abdul-Matin Adelekan - Project Manager
 
-This contains everything you need to run your app locally.
+## Project Description
+Web app where users manage a digital wardrobe, follow brands drops, and track orders.
+Tech: React, TypeScript, Tailwind CSS, Supabase, Gemini AI.
 
-View your app in AI Studio: https://ai.studio/apps/drive/17Xozusx_J3Ki1seta6TgwAaFglncpfJs
+## Project Links
+- Jira Board: https://blbb6m.atlassian.net/jira/software/projects/SCRUM/boards/1?atlOrigin=eyJpIjoiNTExNzM5NjZkMGZlNDFiOWI1OWVmODhjZmQwN2VlM2QiLCJwIjoiaiJ9
+- Figma/Designs (optional): <ADD_LINK_HERE>
 
-## Run Locally
+## DB Design 
+<img width="1084" height="714" alt="Homework #1 (1)" src="https://github.com/user-attachments/assets/56a8bf6c-1bcc-462e-aa5d-111b4456c4e7" />
 
-**Prerequisites:**  Node.js
 
+## Run
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Prerequisites
+- Node.js (v18+)
+- NPM or Yarn
+
+### Installation
+
+1. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Environment Setup**
+   Create a `.env` file in the root directory and add your keys:
+   ```env
+   API_KEY=your_gemini_api_key
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+3. **Start Application**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:5173](http://localhost:5173) to view it in the browser.

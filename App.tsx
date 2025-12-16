@@ -3,6 +3,7 @@ import { supabase } from './services/supabaseClient';
 import { Session } from '@supabase/supabase-js';
 import { ClothingItem, Order, Drop } from './models/types';
 import { MOCK_WARDROBE, MOCK_ORDERS, MOCK_DROPS } from './constants';
+import { transformWardrobeData, transformOrderData, transformDropData } from './utils/transformers';
 
 // Widgets
 import Sidebar from './widgets/Sidebar';
@@ -63,16 +64,7 @@ const App: React.FC = () => {
           .order('date_added', { ascending: false });
 
         if (wardrobeData) {
-          setWardrobe(wardrobeData.map((item: any) => ({
-            id: String(item.id), // Enforce string ID
-            name: item.name,
-            brand: item.brand,
-            category: item.category,
-            imageUrl: item.image_url,
-            // Convert timestamptz to string YYYY-MM-DD for frontend consistency
-            dateAdded: item.date_added ? new Date(item.date_added).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-            color: item.color
-          })));
+          setWardrobe(transformWardrobeData(wardrobeData));
         } else if (wardrobeError) {
           console.warn('Error fetching wardrobe (falling back to mock):', wardrobeError.message);
           setWardrobe(MOCK_WARDROBE);
@@ -85,18 +77,7 @@ const App: React.FC = () => {
           .order('created_at', { ascending: false });
 
         if (ordersData) {
-          setOrders(ordersData.map((item: any) => ({
-            id: String(item.id), // Enforce string ID
-            trackingNumber: item.tracking_number,
-            carrier: item.carrier,
-            itemName: item.item_name,
-            status: item.status,
-            // Handle timestamp -> string conversion
-            estimatedDelivery: item.estimated_delivery 
-              ? new Date(item.estimated_delivery).toLocaleDateString() 
-              : 'Pending',
-            history: item.history || []
-          })));
+          setOrders(transformOrderData(ordersData));
         } else if (ordersError) {
           console.warn('Error fetching orders (falling back to mock):', ordersError.message);
           setOrders(MOCK_ORDERS);
@@ -109,20 +90,7 @@ const App: React.FC = () => {
           .order('drop_datetime', { ascending: true });
 
         if (dropsData) {
-          setDrops(dropsData.map((item: any) => {
-            const dropDate = new Date(item.drop_datetime);
-            return {
-              id: String(item.id), // Enforce string ID
-              brand: item.brand,
-              name: item.name,
-              // Split drop_datetime back into date and time for frontend
-              date: dropDate.toISOString().split('T')[0],
-              time: dropDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              imageUrl: item.image_url,
-              notified: item.notified,
-              url: item.url
-            };
-          }));
+          setDrops(transformDropData(dropsData));
         } else if (dropsError) {
           console.warn('Error fetching drops (falling back to mock):', dropsError.message);
           setDrops(MOCK_DROPS);

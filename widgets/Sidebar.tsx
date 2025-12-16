@@ -7,7 +7,6 @@ import {
   Sparkles,
   LogOut
 } from 'lucide-react';
-import { supabase } from '../services/supabaseClient';
 
 interface SidebarProps {
   activeTab: string;
